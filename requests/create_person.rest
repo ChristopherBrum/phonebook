@@ -1,0 +1,36 @@
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+	"name": "Chris Brum",
+	"number": "555-555-5555"
+}
+
+### missing name
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+	"number": "555-555-5555"
+}
+
+### missing number
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+	"name": "Chris Brum"
+} 
+
+### no body
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+### existing name
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+	"name": "Chris Brum",
+	"number": "123-234-3456"
+}
