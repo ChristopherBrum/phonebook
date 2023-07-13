@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-
 const app = express();
+const Person = require('./models/person');
 
 app.use(express.json());
 app.use(express.static('build'));
@@ -11,32 +12,23 @@ app.use(cors());
 morgan.token('body', (req) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
-let persons = [
-	{ 
-		"id": 1,
-		"name": "Arto Hellas", 
-		"number": "040-123456"
-	},
-	{ 
-		"id": 2,
-		"name": "Ada Lovelace", 
-		"number": "39-44-5323523"
-	},
-	{ 
-		"id": 3,
-		"name": "Dan Abramov", 
-		"number": "12-43-234345"
-	},
-	{ 
-		"id": 4,
-		"name": "Mary Poppendieck", 
-		"number": "39-23-6423122"
-	}
-]
+// Helpers
 
-app.get('/api/persons', (request, response) => {
-	response.send(persons);
-})
+const nameExists = (attemptedName) => {
+	Person
+    .find({})
+    .then((persons) => {
+			// persons.some(person => {
+			// 		console.log(personExists, person.name === attemptedName)
+			// })			
+    })
+    .catch(err => {
+      console.log('error fetching all persons:', err.message)
+      response.status(404).end()
+    })
+}
+
+// Routes
 
 app.get('/info', (request, response) => {
 	const infoMessage = `Phonebook has info for ${persons.length} people`;
@@ -47,28 +39,30 @@ app.get('/info', (request, response) => {
 	response.send(htmlText);
 })
 
-app.get('/api/persons/:id', (request, response) => {
-	const personId = request.params.id;
-	const person = persons.find(person => String(person.id) === personId)
-
-	if (person) {
-		response.json(person);
-	} else {
-		response.status(404).end();
-	}
+app.get('/api/persons', (request, response) => {
+	Person
+    .find({})
+    .then((persons) => {
+			console.log('persons:', persons)
+      response.json(persons);
+    })
+    .catch(err => {
+      console.log('error fetching all persons:', err.message)
+      response.status(404).end()
+    })
 })
 
-const generateId = () => {
-	const maxId = persons.length > 0 
-		? Math.max(...persons.map(person => Number(person.id))) 
-		: 0; 
-
-	return maxId + 1;
-}
-
-const nameExists = (attemptedName) => {
-	return persons.some(person => person.name === attemptedName);
-}
+app.get('/api/persons/:id', (request, response) => {
+	Person
+    .findById(request.params.id)
+    .then(person => {
+      response.json(person);
+    })
+    .catch(err => {
+      console.log('error fetching person:', err.message)
+      response.status(404).end()
+    });
+})
 
 app.post('/api/persons', (request, response) => {
 	const body = request.body;
@@ -83,14 +77,15 @@ app.post('/api/persons', (request, response) => {
     })
 	}
 
-	const newPerson = {
-		id: generateId(),
+	const person = new Person({
 		name: body.name,
 		number: body.number
-	}
+	})
 
-	persons = persons.concat(newPerson);
-	response.json(newPerson);
+	person.save()
+		.then(savedPerson => {
+			response.json(savedPerson);
+		})
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -106,7 +101,9 @@ app.delete('/api/persons/:id', (request, response) => {
 	}
 })
 
-const PORT = process.env.PORT || 3001;
+// Listener
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
 	console.log(`listening on port ${PORT}`);
 })

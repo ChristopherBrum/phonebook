@@ -50,8 +50,3 @@ if (process.argv.length === 3) {
   console.log('3 arguments required: <password> <contact name> <contact number>')
   process.exit(1);
 }
-
-
-
-// username = christopherbrum
-// pw = GFZSxTyWhNfxTmjK
