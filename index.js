@@ -41,7 +41,11 @@ app.delete('/api/persons/:id', (request, response, next) => {
 		.then(() => {
 			response.status(204).end();
 		})
-		.catch(err => next(err.message));
+		.catch(error => {
+			// next(error)
+			console.log(`error deleting person with id: ${request.params.id}`, error.message);
+      response.status(404).end()
+		});
 })
 
 app.get('/info', (request, response) => {
@@ -55,8 +59,8 @@ app.get('/info', (request, response) => {
 			response.set('Content-Type', 'text/html');
 			response.send(htmlText);
     })
-    .catch(err => {
-      console.log('error fetching all persons:', err.message)
+    .catch(error => {
+      console.log('error fetching all persons:', error.message)
       response.status(404).end()
     })
 })
