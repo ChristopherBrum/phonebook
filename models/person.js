@@ -29,7 +29,7 @@ const personSchema = new mongoose.Schema({
   //   validate: {
   //     validator: phoneFormatValidator,
   //     message: 'Invalid phone number format'
-  //   },
+    // },
   // },
   name: String,
   number: String,

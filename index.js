@@ -40,9 +40,9 @@ app.delete('/api/persons/:id', (request, response, next) => {
 			response.status(204).end();
 		})
 		.catch(error => {
-			// next(error)
-			console.log(`error deleting person with id: ${request.params.id}`, error.message);
-      response.status(404).end()
+			next(error)
+			// console.log(`error deleting person with id: ${request.params.id}`, error.message);
+      // response.status(404).end()
 		});
 })
 
