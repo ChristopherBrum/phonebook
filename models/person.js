@@ -19,20 +19,18 @@ const phoneFormatValidator = (phoneNumber) => {
 }
 
 const personSchema = new mongoose.Schema({
-  // name: {
-  //   type: String,
-  //   minLength: 3,
-  //   required: true,
-  // },
-  // number: {
-  //   type: String,
-  //   validate: {
-  //     validator: phoneFormatValidator,
-  //     message: 'Invalid phone number format'
-  //   },
-  // },
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minLength: 3,
+    required: true,
+  },
+  number: {
+    type: String,
+    validate: {
+      validator: phoneFormatValidator,
+      message: 'Invalid phone number format'
+    },
+  },
 });
 
 personSchema.set('toJSON', {

@@ -22,8 +22,6 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
 		return response.status(400).json({ error: error.message });
-	} else if (error.name === 'TypeError') {
-		return response.status(400).json({ error: `TypeError CUSTOM: ${error.message}` });
 	}
 
   next(error)
@@ -39,7 +37,7 @@ app.use(requestLogger);
 app.use(express.static('build'));
 
 app.delete('/api/persons/:id', (request, response) => {
-	Person.findByIdAndDelete(request.params.id)
+	Person.findByIdAndRemove(request.params.id)
 		.then(() => {
 			response.status(204).end();
 		})
