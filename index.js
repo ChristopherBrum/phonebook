@@ -6,7 +6,8 @@ const cors = require('cors');
 const app = express();
 
 const Person = require('./models/person');
-const person = require('./models/person');
+
+///// MIDDLEWARE
 
 app.use(express.static('build'));
 app.use(express.json());
@@ -15,7 +16,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 app.use(cors());
 
 
-// Routes
+///// ROUTES /////
 
 app.get('/info', (request, response) => {
 	Person
@@ -88,7 +89,7 @@ app.delete('/api/persons/:id', (request, response) => {
 		})
 })
 
-// Listener
+///// LISTENER /////
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
