@@ -41,7 +41,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 		.then(() => {
 			response.status(204).end();
 		})
-		.catch(err => next(err));
+		.catch(err => next(err.message));
 })
 
 app.get('/info', (request, response) => {
