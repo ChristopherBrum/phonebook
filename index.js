@@ -91,7 +91,7 @@ app.delete('/api/persons/:id', (request, response) => {
 
 ///// LISTENER /////
 
-const PORT = process.env.PORT;
+const PORT = 3001;
 app.listen(PORT, () => {
 	console.log(`listening on port ${PORT}`);
 })
