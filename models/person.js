@@ -13,10 +13,10 @@ mongoose.connect(url)
 		console.log('error connecting to MongoDB:', err.message);
 	});
 
-const phoneFormatValidator = (phoneNumber) => {
-  const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
-  return phoneRegex.test(phoneNumber);
-}
+// const phoneFormatValidator = (phoneNumber) => {
+//   const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+//   return phoneRegex.test(phoneNumber);
+// }
 
 const personSchema = new mongoose.Schema({
   // name: {

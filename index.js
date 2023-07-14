@@ -16,8 +16,6 @@ const requestLogger = (request, response, next) => {
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
 
-	console.log(error.name)
-
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
@@ -52,7 +50,6 @@ app.get('/info', (request, response) => {
 	Person
     .find({})
     .then((persons) => {
-			console.log(persons)
 			const infoMessage = `Phonebook has info for ${persons.length} people`;
 			const timeReceived = String(new Date());
 			const htmlText = [infoMessage, timeReceived].map(text => '<p>' + text + '</p>').join('');
