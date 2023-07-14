@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(requestLogger);
 app.use(express.static('build'));
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
 	Person.findByIdAndRemove(request.params.id)
 		.then(() => {
 			response.status(204).end();
