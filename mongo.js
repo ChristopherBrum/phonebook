@@ -23,7 +23,7 @@ if (process.argv.length === 3) {
       console.log('phonebook:');
       result.forEach(person => {
         console.log(`${person.name} ${person.number}`);
-      })
+      });
       mongoose.connection.close();
     })
     .catch(error => {
@@ -35,18 +35,18 @@ if (process.argv.length === 3) {
     name: personName,
     number: personNumber,
   });
-  
+
   newPerson
     .save()
-    .then(result => {
+    .then(() => {
       console.log(`added --> name: "${personName}" number: "${personNumber}" to phonebook`);
-      mongoose.connection.close()
+      mongoose.connection.close();
     })
     .catch(error => {
       console.error('Error occurred:', error);
       mongoose.connection.close();
     });
 } else {
-  console.log('3 arguments required: <password> <contact name> <contact number>')
+  console.log('3 arguments required: <password> <contact name> <contact number>');
   process.exit(1);
 }
