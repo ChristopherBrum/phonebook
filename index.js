@@ -40,9 +40,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
 			response.status(204).end();
 		})
 		.catch(error => {
+			console.log('delete person error: backend/index.js line 43')
 			next(error)
-			// console.log(`error deleting person with id: ${request.params.id}`, error.message);
-      // response.status(404).end()
 		});
 })
 
@@ -56,10 +55,7 @@ app.get('/info', (request, response) => {
 			response.set('Content-Type', 'text/html');
 			response.send(htmlText);
     })
-    .catch(error => {
-      console.log('error fetching all persons:', error.message)
-      response.status(404).end()
-    })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
@@ -68,10 +64,7 @@ app.get('/api/persons', (request, response) => {
     .then((persons) => {
       response.json(persons);
     })
-    .catch(err => {
-      console.log('error fetching all persons:', err.message)
-      response.status(404).end()
-    })
+    .catch(err => next(err))
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -95,7 +88,10 @@ app.post('/api/persons', (request, response, next) => {
 		.then(savedPerson => {
 			response.json(savedPerson);
 		})
-		.catch(err => next(err));
+		.catch(err => {
+			console.log('create person error: backend/index.js line 92')
+			next(err)
+		});
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
