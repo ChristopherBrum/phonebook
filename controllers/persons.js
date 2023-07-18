@@ -3,7 +3,7 @@ const Person = require('../models/person');
 const User = require('../models/user');
 
 personRouter.get('/', async (request, response) => {
-  const people = await Person.find({});
+  const people = await Person.find({}).populate('user', { username: 1, name: 1 });
   response.json(people);
 });
 
