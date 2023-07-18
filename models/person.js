@@ -1,20 +1,16 @@
 const mongoose = require('mongoose');
 
 const personSchema = new mongoose.Schema({
-  // name: {
-  //   type: String,
-  //   minLength: 3,
-  //   required: true,
-  // },
-  // number: {
-  //   type: String,
-  //   validate: {
-  //     validator: phoneFormatValidator,
-  //     message: 'Invalid phone number format'
-  // },
-  // },
-  name: String,
+  name: {
+    type: String,
+    minLength: 3,
+    required: true,
+  },
   number: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 });
 
 personSchema.set('toJSON', {

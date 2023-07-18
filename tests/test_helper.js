@@ -1,4 +1,5 @@
 const Person = require('../models/person');
+const User = require('../models/user');
 
 const initialPeople = [
   {
@@ -34,6 +35,11 @@ const insertMany = async (people) => {
   await Promise.all(promiseArray);
 };
 
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map(user => user.toJSON());
+};
+
 module.exports = {
-  initialPeople, nonExistingNumber, peopleInDb
+  initialPeople, nonExistingNumber, peopleInDb, usersInDb
 };

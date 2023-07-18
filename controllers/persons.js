@@ -1,5 +1,6 @@
 const personRouter = require('express').Router();
 const Person = require('../models/person');
+const User = require('../models/user');
 
 personRouter.get('/', async (request, response) => {
   const people = await Person.find({});
@@ -18,9 +19,17 @@ personRouter.get('/:id', async (request, response) => {
 personRouter.post('/', async (request, response) => {
   const body = request.body;
 
+  // HARDCODED!!!! REPLACE
+  // won't pass test because harding userId from production db
+  const userId = '64b5ed2c9983e040315279c4';
+  const user = await User.findById(userId);
+  // const user = await User.findById(body.userId);
+
   const person = new Person({
     name: body.name,
-    number: body.number
+    number: body.number,
+    // CURRENTLY HARDCODED!!!!
+    user: userId,
   });
 
   if (!/^\d{3}-\d{3}-\d{4}$/.test(body.number)) {
@@ -29,7 +38,10 @@ personRouter.post('/', async (request, response) => {
   }
 
   const savedPerson = await person.save();
-  response.status(201).json(savedPerson);
+  user.people = user.people.concat(savedPerson._id);
+  await user.save();
+
+  response.status(201).send(savedPerson);
 });
 
 personRouter.put('/:id', async (request, response) => {
@@ -40,6 +52,7 @@ personRouter.put('/:id', async (request, response) => {
     { name, number },
     { new: true, runValidators: true, context: 'query' }
   );
+
   response.json(updatedPerson);
 });
 

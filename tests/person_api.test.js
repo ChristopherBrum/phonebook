@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const helper = require('./test_helper');
 const app = require('../app');
 const api = supertest(app);
 
 const Person = require('../models/person');
+const User = require('../models/user');
 
 beforeEach(async () => {
   await Person.deleteMany({});
@@ -72,10 +74,24 @@ describe('viewing a specific person', () => {
 });
 
 describe('addition of a new person', () => {
+  beforeEach(async () => {
+		await User.deleteMany({});
+
+		const passwordHash = await bcrypt.hash('sekret', 10);
+		const user = new User({ username: 'root', passwordHash });
+
+		await user.save();
+	});
+
   test('succeeds with valid data', async () => {
+    const user = await helper.usersInDb();
+    const userId = user[0].id;
+
     const newPerson = {
       name: 'Cecil the Dog',
       number: '333-333-3333',
+      // fails the test because of hardcoding the userId in our POST route
+      userId
     };
 
     await api
