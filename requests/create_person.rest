@@ -1,8 +1,9 @@
-POST http://localhost:3001/api/persons HTTP/1.1
+POST http://localhost:3001/api/persons
 Content-Type: application/json
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZlR2FyZGVuR3V5IiwiaWQiOiI2NGI1ZWQyYzk5ODNlMDQwMzE1Mjc5YzQiLCJpYXQiOjE2ODk3MDM3NzF9.2yNFVRgERKICXK-7T8Z_EJ189X1W88-1g2WGE0Vz2xc"
 
 {
-	"name": "Chris Brum",
+	"name": "Fudd Rucker",
 	"number": "555-555-5555"
 }
 

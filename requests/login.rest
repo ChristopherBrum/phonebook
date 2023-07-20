@@ -1,0 +1,17 @@
+### valid credentials
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+	"username": "oliveGardenGuy",
+	"password": "password"
+}
+
+### invalid credentials
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+	"username": "henryCheeseman",
+	"password": "$2b$10$xRuyfxEG7..c.CFbr69jGevcd.BzVsBI4ygiOIjrpK09h3iEdzdWu"
+}

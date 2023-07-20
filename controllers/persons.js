@@ -1,6 +1,15 @@
 const personRouter = require('express').Router();
 const Person = require('../models/person');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '');
+  }
+  return null;
+};
 
 personRouter.get('/', async (request, response) => {
   const people = await Person.find({}).populate('user', { username: 1, name: 1 });
@@ -18,18 +27,17 @@ personRouter.get('/:id', async (request, response) => {
 
 personRouter.post('/', async (request, response) => {
   const body = request.body;
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' });
+  }
 
-  // HARDCODED!!!! REPLACE
-  // won't pass test because harding userId from production db
-  const userId = '64b5ed2c9983e040315279c4';
-  const user = await User.findById(userId);
-  // const user = await User.findById(body.userId);
+  const user = await User.findById(decodedToken.id);
 
   const person = new Person({
     name: body.name,
     number: body.number,
-    // CURRENTLY HARDCODED!!!!
-    user: userId,
+    user: user._id,
   });
 
   if (!/^\d{3}-\d{3}-\d{4}$/.test(body.number)) {
