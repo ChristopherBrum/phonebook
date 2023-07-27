@@ -28,6 +28,7 @@ personRouter.get('/:id', async (request, response) => {
 personRouter.post('/', async (request, response) => {
   const body = request.body;
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' });
   }
@@ -41,8 +42,7 @@ personRouter.post('/', async (request, response) => {
   });
 
   if (!/^\d{3}-\d{3}-\d{4}$/.test(body.number)) {
-    response.status(400).end();
-    return;
+    return response.status(400).end();
   }
 
   const savedPerson = await person.save();
